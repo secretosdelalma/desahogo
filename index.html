@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DESAHOGO — Escribe lo que no puedes decir en voz alta</title>
+<meta name="description" content="Un rincón anónimo para escribir, soltar y sentirse escuchado.">
+<style>
+:root{--ink:#241d1d;--muted:#766969;--rose:#c86f7d;--rose2:#f5dadd;--cream:#fffaf6;--card:#fff;--line:#eee3df;--green:#dfeedd}
+*{box-sizing:border-box} body{margin:0;font-family:Georgia,serif;color:var(--ink);background:var(--cream)}
+button,input,textarea{font:inherit} button{cursor:pointer}
+nav{height:72px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 5%;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.brand{display:flex;gap:12px;align-items:center}.heart{font-size:30px;color:var(--rose)}.brand b{font-size:27px;letter-spacing:2px}.brand small{display:block;color:var(--muted);font-size:12px}
+.navlinks{display:flex;gap:24px;font:14px Arial;color:#4e4444}.navlinks a{cursor:pointer}.navlinks .active{background:var(--rose2);padding:11px 18px;border-radius:20px}
+.primary{border:0;background:var(--rose);color:white;padding:13px 22px;border-radius:24px;font:bold 14px Arial}
+.hero{min-height:360px;padding:50px 8%;background:linear-gradient(90deg,rgba(255,248,242,.96),rgba(255,248,242,.5)),url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=80') center/cover;display:flex;align-items:center}
+.hero h1{font-size:68px;margin:0 0 4px;letter-spacing:3px}.script{font-size:30px;font-style:italic}.hero p{font:15px Arial;color:#554b4b;max-width:650px}.trust{display:flex;gap:24px;font:13px Arial;margin:24px 0}.trust span{display:flex;gap:7px;align-items:center}.hero .primary{font-size:16px;padding:16px 28px}
+.wrap{max-width:1200px;margin:auto;padding:24px 22px}.cats{display:flex;gap:12px;overflow:auto;padding:8px 0 20px}.cat{min-width:92px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:13px 10px;text-align:center;font:12px Arial}.cat span{display:block;font-size:25px;margin-bottom:5px}
+.layout{display:grid;grid-template-columns:1fr 300px;gap:22px}.tabs{display:flex;gap:20px;border-bottom:1px solid var(--line);padding:5px 0 14px;font:14px Arial}.tabs .sel{color:var(--rose);font-weight:bold}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:15px}.card,.sidecard{background:white;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 5px 18px #6b40380d}.meta{display:flex;justify-content:space-between;font:12px Arial;color:#777}.tag{background:var(--rose2);color:#8d4e59;border-radius:12px;padding:5px 9px}.card h3{font:22px Georgia;margin:18px 0 8px}.card p{font:15px Arial;line-height:1.55;color:#534a4a}.reactions{display:flex;gap:17px;font:12px Arial;color:#8d5260;margin-top:16px}.reaction{cursor:pointer}.reaction:hover{font-weight:bold}.sidecard h3{font-size:20px;margin-top:0}.private{background:#f7dddd}.need{display:flex;flex-direction:column;gap:9px}.need button{border:1px solid var(--line);background:white;padding:11px;border-radius:18px;text-align:left}
+.bottom{display:grid;grid-template-columns:1fr 1fr 1fr;gap:15px;margin-top:20px}.feature{min-height:130px;border-radius:18px;padding:22px;background:#f2dfd7}.feature:nth-child(2){background:#f1ddd8}.feature:nth-child(3){background:#edf3e9}.feature h3{margin:0 0 8px;font-size:22px}.feature p{font:13px Arial;color:#554b4b}
+.modal{display:none;position:fixed;inset:0;background:#241d1db8;z-index:20;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modalbox{background:#fffaf7;max-width:620px;width:100%;border-radius:24px;padding:28px}.modalbox h2{font-size:30px;margin-top:0}.close{float:right;border:0;background:none;font-size:25px}.modalbox textarea{width:100%;height:180px;border:1px solid var(--line);border-radius:15px;padding:15px;resize:vertical;background:white}.options{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 20px}.options button{border:1px solid var(--line);background:white;border-radius:18px;padding:8px 12px}.options button.active{background:var(--rose2);border-color:var(--rose)}footer{text-align:center;padding:35px;color:#8a7b7b;font:12px Arial}
+@media(max-width:800px){.navlinks{display:none}.hero{min-height:390px;padding:35px 7%}.hero h1{font-size:48px}.script{font-size:24px}.trust{flex-wrap:wrap}.layout,.grid,.bottom{grid-template-columns:1fr}.wrap{padding:18px 14px}}
+</style>
+</head>
+<body>
+<nav>
+ <div class="brand"><span class="heart">♡</span><div><b>DESAHOGO</b><small>Escribe. Suelta. Respira. No estás solo.</small></div></div>
+ <div class="navlinks"><a class="active">Inicio</a><a>Explorar</a><a>Nunca se lo dije</a><a>Mi rincón privado</a></div>
+ <button class="primary" onclick="openWrite()">Escribir ahora</button>
+</nav>
+<section class="hero">
+ <div>
+  <h1>DESAHOGO</h1><div class="script">Aquí puedes decir lo que no puedes decir en voz alta.</div>
+  <div class="trust"><span>◉ Totalmente anónimo</span><span>♡ Una comunidad que te entiende</span><span>♧ Sin juicios</span><span>◌ Escribe y suelta</span></div>
+  <button class="primary" onclick="openWrite()">✎ Quiero desahogarme</button>
+ </div>
+</section>
+<main class="wrap">
+ <div class="cats">
+  <div class="cat"><span>♥</span>Amor</div><div class="cat"><span>💔</span>Desamor</div><div class="cat"><span>☁</span>Tristeza</div><div class="cat"><span>🔥</span>Enojo</div><div class="cat"><span>◉</span>Soledad</div><div class="cat"><span>♧</span>Familia</div><div class="cat"><span>▣</span>Trabajo</div><div class="cat"><span>◫</span>Dinero</div><div class="cat"><span>💬</span>Nunca lo conté</div><div class="cat"><span>🌿</span>Algo bonito</div>
+ </div>
+ <div class="layout">
+  <section>
+   <div class="tabs"><span class="sel">Desahogos recientes</span><span>Lo más leído</span><span>Historias que inspiran</span><span>Nunca se lo dije</span></div>
+   <div id="posts" class="grid"></div>
+  </section>
+  <aside>
+   <div class="sidecard private"><h3>🔒 Mi rincón privado</h3><p style="font:14px Arial;line-height:1.5">Escribe lo que sientes, aunque no quieras publicarlo. A veces solo necesitas soltarlo.</p><button class="primary" onclick="openPrivate()">✎ Escribir en privado</button></div>
+   <div class="sidecard" style="margin-top:15px"><h3>Hoy necesito…</h3><div class="need">
+    <button>🎧 Que me escuchen</button><button>♥ Que alguien me entienda</button><button>💬 Un consejo</button><button>🌿 Soltarlo y seguir</button><button>🌙 Decir algo que nunca me atreví a decir</button>
+   </div></div>
+  </aside>
+ </div>
+ <div class="bottom">
+  <div class="feature"><h3>🕊️ Nunca se lo dije</h3><p>Historias anónimas de cosas que la gente nunca pudo decir.</p><button class="primary">Leer historias →</button></div>
+  <div class="feature"><h3>☀️ No estás solo</h3><p>A veces un desahogo puede ser el comienzo de algo mejor.</p></div>
+  <div class="feature"><h3>🌱 Recursos de apoyo</h3><p>Frases, herramientas y recursos para cuidar tu bienestar emocional.</p></div>
+ </div>
+</main>
+<footer>DESAHOGO · Un espacio para escribir, soltar y sentirse escuchado.</footer>
+
+<div id="modal" class="modal"><div class="modalbox"><button class="close" onclick="closeModal()">×</button><h2 id="modalTitle">Quiero desahogarme</h2><p style="font:14px Arial;color:#6b5c5c">No necesitas poner tu nombre. Escribe lo que llevas dentro.</p><div class="options" id="opts"><button onclick="pick(this)">Amor</button><button onclick="pick(this)">Desamor</button><button onclick="pick(this)">Tristeza</button><button onclick="pick(this)">Familia</button><button onclick="pick(this)">Trabajo</button><button onclick="pick(this)">Soledad</button></div><textarea id="text" placeholder="Escribe aquí…"></textarea><br><button class="primary" style="margin-top:14px" onclick="publish()">Publicar anónimamente</button></div></div>
+
+<script>
+const initial=[
+ {t:"Hoy me siento agotada...",p:"Siento que doy todo en mi trabajo y nadie lo nota. Hago mi mejor esfuerzo, pero siempre parece que falta algo. Estoy cansada y a veces pregunto si vale la pena...",c:"Trabajo",r:[238,146,57,32]},
+ {t:"Todavía lo extraño...",p:"Pasaron meses y todavía pienso en él. Sé que debo seguir adelante, pero hay días que lo extraño como si fuera ayer. Solo necesitaba escribirlo...",c:"Desamor",r:[412,389,98,76]},
+ {t:"Nunca le he dicho a mi mamá...",p:"Nunca le he dicho a mi mamá que muchas veces necesité que me abrazara. Siempre fui la fuerte, pero también me dolía...",c:"Familia",r:[511,428,112,53]},
+ {t:"Hoy quiero agradecer...",p:"Hoy quiero compartir algo bonito. A pesar de todo, estoy orgullosa de mí. He pasado por momentos difíciles y aquí estoy, de pie, más fuerte.",c:"Algo bonito",r:[698,521,94,27]}
+];
+let posts=JSON.parse(localStorage.getItem("desahogo_posts")||"null")||initial;
+function render(){document.getElementById("posts").innerHTML=posts.map((x,i)=>`<article class="card"><div class="meta"><span>👤 Anónimo · hace ${i+2} horas</span><span class="tag">${x.c}</span></div><h3>${x.t}</h3><p>${x.p}</p><div class="reactions"><span class="reaction" onclick="react(${i},0)">♡ ${x.r[0]} &nbsp; Te abrazo</span><span class="reaction" onclick="react(${i},1)">♡ ${x.r[1]} &nbsp; Te entiendo</span><span class="reaction">♧ ${x.r[2]} &nbsp; A mí también</span><span>◯ ${x.r[3]} &nbsp; Comentarios</span></div></article>`).join("")}
+function react(i,j){posts[i].r[j]++;localStorage.setItem("desahogo_posts",JSON.stringify(posts));render()}
+function openWrite(){document.getElementById("modalTitle").textContent="Quiero desahogarme";document.getElementById("modal").classList.add("show")}
+function openPrivate(){document.getElementById("modalTitle").textContent="Mi rincón privado";document.getElementById("modal").classList.add("show")}
+function closeModal(){document.getElementById("modal").classList.remove("show");document.getElementById("text").value=""}
+function pick(b){document.querySelectorAll("#opts button").forEach(x=>x.classList.remove("active"));b.classList.add("active")}
+function publish(){let t=document.getElementById("text").value.trim();if(!t){alert("Escribe algo primero ❤️");return}let b=document.querySelector("#opts .active");posts.unshift({t:t.split(/[.!?]/)[0].slice(0,48)+(t.length>48?"…":""),p:t,c:b?b.textContent:"Mi desahogo",r:[0,0,0,0]});localStorage.setItem("desahogo_posts",JSON.stringify(posts));closeModal();render();window.scrollTo({top:700,behavior:"smooth"})}
+render();
+</script>
+</body>
+</html>

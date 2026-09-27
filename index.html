@@ -77,7 +77,9 @@ function openPrivate(){document.getElementById("modalTitle").textContent="Mi rin
 function closeModal(){document.getElementById("modal").classList.remove("show");document.getElementById("text").value=""}
 function pick(b){document.querySelectorAll("#opts button").forEach(x=>x.classList.remove("active"));b.classList.add("active")}
 function publish(){let t=document.getElementById("text").value.trim();if(!t){alert("Escribe algo primero ❤️");return}let b=document.querySelector("#opts .active");posts.unshift({t:t.split(/[.!?]/)[0].slice(0,48)+(t.length>48?"…":""),p:t,c:b?b.textContent:"Mi desahogo",r:[0,0,0,0]});localStorage.setItem("desahogo_posts",JSON.stringify(posts));closeModal();render();window.scrollTo({top:700,behavior:"smooth"})}
-render();
+render(); 
+ const SUPABASE_URL = "https://njrdgzuymqhfgqfyrskk.supabase.co";
+const SUPABASE_KEY = "sb_publishable_IjI7i55pD1Zj-JW7tpcusQ__-Tv4NM6"
 </script>
 </body>
 </html>

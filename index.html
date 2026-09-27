@@ -89,6 +89,11 @@ nav{
   font:bold 14px Arial
 }
 
+.primary:disabled{
+  opacity:.65;
+  cursor:not-allowed
+}
+
 .hero{
   min-height:360px;
   padding:50px 8%;
@@ -236,15 +241,12 @@ nav{
 }
 
 .reaction{cursor:pointer}
-
 .reaction:hover{font-weight:bold}
 
 .sidecard h3{
   font-size:20px;
   margin-top:0
 }
-
-.private{background:#f7dddd}
 
 .need{
   display:flex;
@@ -349,6 +351,76 @@ nav{
   border-color:var(--rose)
 }
 
+/* CONFIRMACION BONITA */
+
+.confirmation{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(36,29,29,.58);
+  z-index:40;
+  align-items:center;
+  justify-content:center;
+  padding:20px
+}
+
+.confirmation.show{
+  display:flex
+}
+
+.confirmation-box{
+  position:relative;
+  background:#fffaf7;
+  width:100%;
+  max-width:430px;
+  padding:48px 35px 42px;
+  border-radius:28px;
+  text-align:center;
+  box-shadow:0 20px 60px rgba(63,37,37,.25);
+  animation:confirmationIn .28s ease-out
+}
+
+.confirmation-heart{
+  width:72px;
+  height:72px;
+  margin:0 auto 20px;
+  border-radius:50%;
+  background:var(--rose2);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:34px;
+  color:var(--rose)
+}
+
+.confirmation-box h2{
+  margin:0;
+  font-size:27px;
+  line-height:1.3
+}
+
+.confirmation-close{
+  position:absolute;
+  right:18px;
+  top:14px;
+  border:0;
+  background:none;
+  color:#766969;
+  font-size:26px;
+  line-height:1
+}
+
+@keyframes confirmationIn{
+  from{
+    opacity:0;
+    transform:translateY(12px) scale(.97)
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1)
+  }
+}
+
 footer{
   text-align:center;
   padding:35px;
@@ -378,6 +450,15 @@ footer{
   .wrap{
     padding:18px 14px
   }
+
+  .confirmation-box{
+    max-width:360px;
+    padding:42px 25px 36px
+  }
+
+  .confirmation-box h2{
+    font-size:24px
+  }
 }
 </style>
 </head>
@@ -399,7 +480,6 @@ footer{
 <a class="active">Inicio</a>
 <a>Explorar</a>
 <a>Nunca se lo dije</a>
-<a>Mi rincón privado</a>
 </div>
 
 <button class="primary" onclick="openWrite()">
@@ -471,23 +551,7 @@ Aquí puedes decir lo que no puedes decir en voz alta.
 
 <aside>
 
-<div class="sidecard private">
-
-<h3>🔒 Mi rincón privado</h3>
-
-<p style="font:14px Arial;line-height:1.5">
-Escribe lo que sientes, aunque no quieras publicarlo.
-A veces solo necesitas soltarlo.
-</p>
-
-<button class="primary" onclick="openPrivate()">
-✎ Escribir en privado
-</button>
-
-</div>
-
-
-<div class="sidecard" style="margin-top:15px">
+<div class="sidecard">
 
 <h3>Hoy necesito…</h3>
 
@@ -554,6 +618,8 @@ DESAHOGO · Un espacio para escribir, soltar y sentirse escuchado.
 </footer>
 
 
+<!-- MODAL PARA ESCRIBIR -->
+
 <div id="modal" class="modal">
 
 <div class="modalbox">
@@ -600,7 +666,32 @@ Publicar anónimamente
 </div>
 
 
+<!-- CONFIRMACION PERSONALIZADA -->
+
+<div id="confirmation" class="confirmation">
+
+<div class="confirmation-box">
+
+<button
+class="confirmation-close"
+onclick="closeConfirmation()"
+>×</button>
+
+<div class="confirmation-heart">
+♥
+</div>
+
+<h2>
+Tu desahogo fue enviado ❤️
+</h2>
+
+</div>
+
+</div>
+
+
 <!-- SUPABASE: cargar UNA sola vez -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
@@ -614,12 +705,6 @@ const SUPABASE_URL =
 
 const SUPABASE_KEY =
 "sb_publishable_IjI7i55pD1Zj-JW7tpcusQ__-Tv4NM6";
-
-/*
-  IMPORTANTE:
-  usamos un nombre diferente para evitar el problema anterior
-  de "supabase already been declared".
-*/
 
 const desahogoDB = window.supabase.createClient(
   SUPABASE_URL,
@@ -767,17 +852,6 @@ document.getElementById("modal")
 }
 
 
-function openPrivate(){
-
-document.getElementById("modalTitle").textContent =
-"Mi rincón privado";
-
-document.getElementById("modal")
-.classList.add("show");
-
-}
-
-
 function closeModal(){
 
 document.getElementById("modal")
@@ -801,6 +875,26 @@ document.querySelectorAll("#opts button")
 });
 
 button.classList.add("active");
+
+}
+
+
+/* =====================================================
+   CONFIRMACION
+===================================================== */
+
+function showConfirmation(){
+
+document.getElementById("confirmation")
+.classList.add("show");
+
+}
+
+
+function closeConfirmation(){
+
+document.getElementById("confirmation")
+.classList.remove("show");
 
 }
 
@@ -886,10 +980,6 @@ boton.textContent =
 "Publicando...";
 
 
-/*
-  PRIMERO se guarda en Supabase.
-*/
-
 const resultado =
 await guardarEnSupabase(
   texto,
@@ -902,10 +992,6 @@ console.log(
   resultado
 );
 
-
-/*
-  Después lo mostramos localmente.
-*/
 
 posts.unshift({
 
@@ -941,9 +1027,11 @@ window.scrollTo({
 });
 
 
-alert(
-"Tu desahogo fue enviado ❤️"
-);
+/*
+  Ya NO usamos el alert del navegador.
+*/
+
+showConfirmation();
 
 
 }catch(error){

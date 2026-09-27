@@ -154,6 +154,7 @@ Escribe lo que sientes, aunque no quieras publicarlo. A veces solo necesitas sol
 
 <div class="sidecard" style="margin-top:15px">
 <h3>Hoy necesito…</h3>
+
 <div class="need">
 <button>🎧 Que me escuchen</button>
 <button>♥ Que alguien me entienda</button>
@@ -161,6 +162,7 @@ Escribe lo que sientes, aunque no quieras publicarlo. A veces solo necesitas sol
 <button>🌿 Soltarlo y seguir</button>
 <button>🌙 Decir algo que nunca me atreví a decir</button>
 </div>
+
 </div>
 
 </aside>
@@ -185,6 +187,7 @@ Escribe lo que sientes, aunque no quieras publicarlo. A veces solo necesitas sol
 </div>
 
 </div>
+
 </main>
 
 <footer>
@@ -215,7 +218,7 @@ No necesitas poner tu nombre. Escribe lo que llevas dentro.
 
 <br>
 
-<button id="publishButton" class="primary" style="margin-top:14px" onclick="publish()">
+<button class="primary" style="margin-top:14px" onclick="publish()">
 Publicar anónimamente
 </button>
 
@@ -226,56 +229,48 @@ Publicar anónimamente
 
 <script>
 
-const SUPABASE_URL =
-"https://njrdqzuymqhfgqfyrskk.supabase.co";
+const SUPABASE_URL = "https://njrdqzuymqhfgqfyrskk.supabase.co";
+const SUPABASE_KEY = "sb_publishable_IjI7i55pD1Zj-JW7tpcusQ__-Tv4NM6";
 
-const SUPABASE_KEY =
-"sb_publishable_IjI7i55pD1Zj-JW7tpcusQ__-Tv4NM6";
-
-const supabaseClient =
-window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-
+const supabase = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 const initial=[
-
 {
 t:"Hoy me siento agotada...",
 p:"Siento que doy todo en mi trabajo y nadie lo nota. Hago mi mejor esfuerzo, pero siempre parece que falta algo. Estoy cansada y a veces pregunto si vale la pena...",
 c:"Trabajo",
 r:[238,146,57,32]
 },
-
 {
 t:"Todavía lo extraño...",
 p:"Pasaron meses y todavía pienso en él. Sé que debo seguir adelante, pero hay días que lo extraño como si fuera ayer. Solo necesitaba escribirlo...",
 c:"Desamor",
 r:[412,389,98,76]
 },
-
 {
 t:"Nunca le he dicho a mi mamá...",
 p:"Nunca le he dicho a mi mamá que muchas veces necesité que me abrazara. Siempre fui la fuerte, pero también me dolía...",
 c:"Familia",
 r:[511,428,112,53]
 },
-
 {
 t:"Hoy quiero agradecer...",
 p:"Hoy quiero compartir algo bonito. A pesar de todo, estoy orgullosa de mí. He pasado por momentos difíciles y aquí estoy, de pie, más fuerte.",
 c:"Algo bonito",
 r:[698,521,94,27]
 }
-
 ];
-
 
 let posts =
 JSON.parse(localStorage.getItem("desahogo_posts") || "null") || initial;
 
-
 function render(){
 
-document.getElementById("posts").innerHTML = posts.map((x,i)=>`
+document.getElementById("posts").innerHTML =
+posts.map((x,i)=>`
 
 <article class="card">
 
@@ -314,7 +309,6 @@ document.getElementById("posts").innerHTML = posts.map((x,i)=>`
 
 }
 
-
 function react(i,j){
 
 posts[i].r[j]++;
@@ -328,7 +322,6 @@ render();
 
 }
 
-
 function openWrite(){
 
 document.getElementById("modalTitle").textContent =
@@ -337,7 +330,6 @@ document.getElementById("modalTitle").textContent =
 document.getElementById("modal").classList.add("show");
 
 }
-
 
 function openPrivate(){
 
@@ -348,7 +340,6 @@ document.getElementById("modal").classList.add("show");
 
 }
 
-
 function closeModal(){
 
 document.getElementById("modal").classList.remove("show");
@@ -356,7 +347,6 @@ document.getElementById("modal").classList.remove("show");
 document.getElementById("text").value="";
 
 }
-
 
 function pick(b){
 
@@ -367,16 +357,15 @@ b.classList.add("active");
 
 }
 
+async function guardarEnSupabase(t, categoria){
 
-async function guardarEnSupabase(texto,categoria){
-
-const {error} = await supabaseClient
+const { error } = await supabase
 .from("desahogos")
 .insert([
 {
-Content:texto,
-category:categoria,
-status:"publicado"
+Content: t,
+category: categoria,
+status: "pending"
 }
 ]);
 
@@ -387,51 +376,31 @@ throw error;
 
 }
 
-
 async function publish(){
 
-const textElement =
-document.getElementById("text");
-
 const t =
-textElement.value.trim();
+document.getElementById("text").value.trim();
 
 if(!t){
-
 alert("Escribe algo primero ❤️");
-
 return;
-
 }
 
-const selected =
+const b =
 document.querySelector("#opts .active");
 
 const categoria =
-selected ? selected.textContent : "Mi desahogo";
-
-const button =
-document.getElementById("publishButton");
-
-button.disabled=true;
-button.textContent="Publicando...";
+b ? b.textContent : "Mi desahogo";
 
 try{
 
 await guardarEnSupabase(t,categoria);
 
 posts.unshift({
-
-t:
-t.split(/[.!?]/)[0].slice(0,48)
-+(t.length>48 ? "…" : ""),
-
+t:t.split(/[.!?]/)[0].slice(0,48)+(t.length>48?"…":""),
 p:t,
-
 c:categoria,
-
 r:[0,0,0,0]
-
 });
 
 localStorage.setItem(
@@ -448,30 +417,15 @@ top:700,
 behavior:"smooth"
 });
 
-alert("Tu desahogo fue publicado ❤️");
+alert("Tu desahogo fue enviado ❤️");
 
-}
+}catch(error){
 
-catch(error){
-
-console.error(error);
-
-alert(
-"No se pudo publicar el desahogo. Inténtalo nuevamente."
-);
-
-}
-
-finally{
-
-button.disabled=false;
-
-button.textContent="Publicar anónimamente";
+alert("No se pudo publicar el desahogo. Inténtalo nuevamente.");
 
 }
 
 }
-
 
 render();
 

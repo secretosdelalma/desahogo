@@ -62,6 +62,7 @@ nav{height:72px;background:#fff;display:flex;align-items:center;justify-content:
 
 <div id="modal" class="modal"><div class="modalbox"><button class="close" onclick="closeModal()">×</button><h2 id="modalTitle">Quiero desahogarme</h2><p style="font:14px Arial;color:#6b5c5c">No necesitas poner tu nombre. Escribe lo que llevas dentro.</p><div class="options" id="opts"><button onclick="pick(this)">Amor</button><button onclick="pick(this)">Desamor</button><button onclick="pick(this)">Tristeza</button><button onclick="pick(this)">Familia</button><button onclick="pick(this)">Trabajo</button><button onclick="pick(this)">Soledad</button></div><textarea id="text" placeholder="Escribe aquí…"></textarea><br><button class="primary" style="margin-top:14px" onclick="publish()">Publicar anónimamente</button></div></div>
 
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const initial=[
  {t:"Hoy me siento agotada...",p:"Siento que doy todo en mi trabajo y nadie lo nota. Hago mi mejor esfuerzo, pero siempre parece que falta algo. Estoy cansada y a veces pregunto si vale la pena...",c:"Trabajo",r:[238,146,57,32]},
@@ -76,6 +77,7 @@ function openWrite(){document.getElementById("modalTitle").textContent="Quiero d
 function openPrivate(){document.getElementById("modalTitle").textContent="Mi rincón privado";document.getElementById("modal").classList.add("show")}
 function closeModal(){document.getElementById("modal").classList.remove("show");document.getElementById("text").value=""}
 function pick(b){document.querySelectorAll("#opts button").forEach(x=>x.classList.remove("active"));b.classList.add("active")}
+ 
 async function guardarEnSupabase(t){
  await supabase.from("desahogos").insert([{"Content":t,category:"Mi desahogo",status:"publicado"}]);
  }
